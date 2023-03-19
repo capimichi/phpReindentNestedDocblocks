@@ -24,6 +24,10 @@ func (phpFileHelper *PhpFileHelper) GetDocblockCleanedContent(filePath string) s
 			lines[i] = phpFileHelper.ReplaceLineContent(line, dockblockIndentation)
 		}
 
+		if phpFileHelper.IsDockblockDecrementLevel(line) {
+			dockblockIndentation--
+		}
+
 		if phpFileHelper.IsDockblockStarting(line) {
 			dockblockStarted = true
 			dockblockIndentation = 0
@@ -31,10 +35,6 @@ func (phpFileHelper *PhpFileHelper) GetDocblockCleanedContent(filePath string) s
 
 		if phpFileHelper.IsDockblockIncrementLevel(line) {
 			dockblockIndentation++
-		}
-
-		if phpFileHelper.IsDockblockDecrementLevel(line) {
-			dockblockIndentation--
 		}
 
 		if phpFileHelper.IsDockblockEnding(line) {
@@ -61,6 +61,10 @@ func (phpFileHelper *PhpFileHelper) ReplaceLineContent(line string, indentCount 
 
 	clean := phpFileHelper.GetCleanLine(line)
 
+	if clean == ")" || clean == ")," {
+		indentCount = indentCount - 1
+	}
+
 	finalString := strings.Split(line, "*")[0]
 
 	finalString = finalString + "*"
@@ -80,6 +84,10 @@ func (phpFileHelper *PhpFileHelper) ReplaceLineContent(line string, indentCount 
 
 func (phpFileHelper *PhpFileHelper) GetCleanLine(line string) string {
 	// return everything after *
+
+	if !strings.Contains(line, "*") {
+		return ""
+	}
 
 	clean := strings.Split(line, "*")[1]
 
