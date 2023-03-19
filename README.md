@@ -11,7 +11,7 @@ So you have to find a way to reindent them.
 
 If you usually do it manually, you will end up with a lot of time wasted.
 
-So this project will help you to reindent them automatically:
+So this tool will help you to reindent them automatically:
 
 ![Preview Indent](https://raw.githubusercontent.com/capimichi/phpReindentNestedDocblocks/main/preview.gif)
 
